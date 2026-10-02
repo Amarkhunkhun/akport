@@ -1,0 +1,62 @@
+/* tokens.css — generated from the design system. Edit values here to retheme the whole site. */
+:root {
+
+  /* color */
+  --ground: #0a0a0a;
+  --ground-raised: #121212;
+  --letterbox: #000000;
+  --line: #1f1f1d;
+  --ink: #edede8;
+  --ink-muted: #8c8c86;
+  --ink-faint: #5e5e59;
+  --green-900: #0f2a1d;
+  --green-700: #1e4d35;
+  --scrim: rgba(10, 10, 10, 0.99);
+  --focus: var(--ink);
+
+  /* type */
+  --font-sans: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", ui-monospace, monospace;
+
+  /* spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+  --space-7: 128px;
+
+  /* radius */
+  --radius-0: 0px;
+  --radius-dot: 50%;
+
+  /* duration */
+  --dur-snap: 120ms;
+  --dur-cut: 220ms;
+  --dur-hold: 160ms;
+  --dur-open: 260ms;
+  --dur-fade: 200ms;
+
+  /* easing */
+  --ease-snap: cubic-bezier(0.7, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-linear: linear;
+
+  /* layout */
+  --rail-width: 232px;
+  --bar-height: 56px;
+  --letterbox-height: 10vh;
+  --row-height: 320px;
+  --bp-desktop: 900px;
+
+  /* opacity */
+  --grain-opacity: 0.07;
+  --hero-dim: 0.82;
+
+  /* zIndex */
+  --z-grain: 90;
+  --z-rail: 50;
+  --z-overlay: 70;
+  --z-shutter: 100;
+}
