@@ -13,10 +13,11 @@ Portfolio site for Amar Khunkhun: photos and video. Plain HTML, CSS and JavaScri
 
 All photos, videos and links come from **`media.js`**. You never have to touch the HTML.
 
+Right now the photos are random stock images from picsum.photos so the layout looks real. Swap every one of them for your own before you share the link.
+
 1. Export the file at the size in the table below and drop it into its folder under `media/`.
 2. Open `media.js` and fill in that entry's `src` (plus `thumb`, `poster` or `preview` where it applies) and the `ratio` (width ÷ height).
-3. Delete the `tone: "…"` bit from that entry. It only colors the placeholder.
-4. Commit. The live site updates within a few minutes.
+3. Commit. The live site updates within a few minutes.
 
 To add a photo, copy a line and add it where you want it in the order. To remove one, delete its line. Your Instagram and TikTok links are at the top of the same file.
 
@@ -24,10 +25,10 @@ To add a photo, copy a line and add it where you want it in the order. To remove
 | --- | --- | --- | --- | --- |
 | photo | `media/photos/full/` | 2400px long edge | WebP | ~500 KB |
 | photo thumbnail | `media/photos/thumb/` | 800px long edge | WebP | ~120 KB |
-| home video | `media/video/` | 1920×1080, 6–12 s, no audio | MP4 (H.264) | under 8 MB |
+| home video | `media/video/` | 1920×1080, 6-12 s, no audio | MP4 (H.264) | under 8 MB |
 | home video poster | `media/video/` | 1920×1080 still | JPG | ~150 KB |
 | video | `media/video/` | up to 1080p | MP4 (H.264) | under 50 MB |
-| hover preview | `media/video/` | 480p, 3–4 s, no audio | MP4 (H.264) | under 600 KB |
+| hover preview | `media/video/` | 480p, 3-4 s, no audio | MP4 (H.264) | under 600 KB |
 | video poster | `media/video/` | same shape as the video | JPG | ~150 KB |
 | portrait | `media/about/` | 1200×1500 (4:5) | WebP | ~200 KB |
 
@@ -55,6 +56,7 @@ media.js            ← all your photos, videos and links
 tokens.css          colors, type, spacing, timing (edit to retheme)
 styles.css          every component's styles
 main.js             behaviour: shutter, grid, lightbox, scroll
+fonts/              Space Grotesk + IBM Plex Mono, self-hosted (free, SIL Open Font License)
 media/              your files
 ```
 

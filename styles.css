@@ -1,7 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap");
+/* Fonts are self-hosted in /fonts (SIL Open Font License, see the LICENSE files there). */
+@font-face { font-family: "Space Grotesk"; src: url("fonts/space-grotesk-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Space Grotesk"; src: url("fonts/space-grotesk-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Space Grotesk"; src: url("fonts/space-grotesk-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
 
 /* ============================================================
-   AMAR KHUNKHUN — component styles
+   AMAR KHUNKHUN: component styles
    Every value comes from tokens.css. Fallbacks are only there
    so this file still works if it is copied into the real site
    before tokens.css is.
@@ -116,10 +121,6 @@
 .ak-nav__link:hover, .ak-nav__link:hover i { color: var(--ink); }
 .ak-nav__link[aria-current="page"] { color: var(--ink); }
 .ak-nav__link[aria-current="page"] i { color: var(--ink-muted); }
-.ak-nav__link[aria-current="page"]::before {
-  content: ""; position: absolute; left: calc(-1 * var(--space-3)); top: 50%;
-  width: 6px; height: 6px; margin-top: -3px; border-radius: var(--radius-dot); background: var(--green-700);
-}
 .ak-nav__group { color: var(--ink-muted); }
 .ak-rail__foot { display: grid; gap: var(--space-3); }
 .ak-rail__social { display: flex; gap: var(--space-4); }
@@ -281,9 +282,6 @@ body .ak-lightbox, body .ak-player { z-index: calc(var(--z-overlay, 70) + 2); } 
   display: flex; justify-content: space-between; align-items: center;
 }
 .ak-vtile__meta .ak-counter { color: var(--ink); text-shadow: 0 0 12px rgba(0, 0, 0, .8); }
-.ak-vtile__rec { display: inline-flex; align-items: center; gap: var(--space-2); }
-.ak-vtile__rec::before { content: ""; width: 6px; height: 6px; border-radius: var(--radius-dot); background: var(--ink); opacity: .9; }
-.ak-vtile.is-playing .ak-vtile__rec::before { animation: ak-caret 600ms steps(1) infinite; }
 
 .ak-player {
   position: fixed; inset: 0; z-index: var(--z-overlay, 70); background: var(--letterbox);
@@ -323,7 +321,7 @@ body .ak-lightbox, body .ak-player { z-index: calc(var(--z-overlay, 70) + 2); } 
 }
 
 /* ============================================================
-   SITE LAYOUT — page frame shared by every page
+   SITE LAYOUT: page frame shared by every page
    ============================================================ */
 html { background: var(--ground); scrollbar-color: var(--line) var(--ground); }
 .ak-page { margin-left: var(--rail-width); min-height: 100svh; padding: var(--space-5) var(--space-5) var(--space-7); }
@@ -347,3 +345,32 @@ html { background: var(--ground); scrollbar-color: var(--line) var(--ground); }
 .ak-incoming .ak-shutter__blades i { transform: scaleY(1); transition: none; }
 .ak-incoming .ak-shutter .ak-letterbox::before, .ak-incoming .ak-shutter .ak-letterbox::after { transform: none; transition: none; }
 @media (prefers-reduced-motion: reduce) { .ak-incoming .ak-shutter { opacity: 1; transition: none; } }
+
+/* ============================================================
+   REVISION 2
+   ============================================================ */
+
+/* Hero progress runs on the compositor where the browser supports
+   scroll-driven animations. main.js only listens to scroll as a
+   fallback for browsers that don't. */
+@property --p { syntax: "<number>"; inherits: true; initial-value: 0; }
+@keyframes ak-hero-progress { from { --p: 0; } to { --p: 1; } }
+@supports (animation-timeline: view()) {
+  .ak-hero { animation: ak-hero-progress linear both; animation-timeline: view(); animation-range: contain 0% contain 100%; }
+}
+
+/* thumbnails fade in once loaded; ground-raised holds their place until then */
+.ak-tile img { opacity: 0; transition: opacity var(--dur-cut) var(--ease-out); }
+.ak-tile img.is-loaded { opacity: 1; }
+img.ak-hero__video, img.ak-about__portrait { object-fit: cover; }
+
+/* tactile press */
+.ak-link:active, .ak-lightbox__btn:active, .ak-bar__btn:active, .ak-nav__link:active { transform: translateY(1px); }
+.ak-link, .ak-lightbox__btn, .ak-bar__btn { display: inline-block; }
+.ak-tile { transition: transform var(--dur-snap) var(--ease-snap); }
+.ak-tile:active { transform: scale(.995); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ak-tile img { transition: none; }
+  .ak-tile:active { transform: none; }
+}

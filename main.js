@@ -1,4 +1,4 @@
-/* AMAR KHUNKHUN — behaviour. Plain JS, no framework, no network.
+/* AMAR KHUNKHUN: behaviour. Plain JS, no framework, no network.
    Assigns window.AK. The real site can load this file as-is (main.js). */
 (function () {
   'use strict';
@@ -165,6 +165,8 @@
      scroller: window (site) or an element (preview). */
   function heroScroll(hero, scroller, onFrame) {
     scroller = scroller || window;
+    // Browsers with CSS scroll-driven animations drive --p in styles.css; nothing to do here.
+    if (scroller === window && !onFrame && window.CSS && CSS.supports('animation-timeline: view()')) return function () {};
     var ticking = false;
     function update() {
       ticking = false;
@@ -228,7 +230,7 @@
 })();
 
 /* ============================================================
-   SITE — wires the components to media.js on every page.
+   SITE: wires the components to media.js on every page.
    You shouldn't need to edit anything below.
    ============================================================ */
 (function () {
@@ -236,7 +238,7 @@
   var AK = window.AK, MEDIA = window.MEDIA || {}, LINKS = window.LINKS || {};
   var root = document.body.getAttribute('data-root') || '';
   var page = document.body.getAttribute('data-page');
-  var url = function (p) { return p ? root + p : ''; };
+  var url = function (p) { return !p ? '' : (/^(https?:)?\/\//.test(p) ? p : root + p); };
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var store = {
     get: function (k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } },
@@ -295,17 +297,23 @@
   });
 
   /* ---------- helpers ---------- */
+  function loaded(img) {
+    var on = function () { img.classList.add('is-loaded'); };
+    if (img.complete && img.naturalWidth) on();
+    else { img.addEventListener('load', on); img.addEventListener('error', on); }
+  }
   function placeholder(el, tone) { el.classList.add('ak-ph'); el.setAttribute('data-tone', tone || 'night'); }
   function photoTile(p, i, onOpen) {
     var a = document.createElement('a');
     a.className = 'ak-tile';
     a.href = p.src ? url(p.src) : '#';
     a.setAttribute('data-ratio', p.ratio || 1.5);
-    a.setAttribute('aria-label', (p.alt || 'Photo') + ' — open ' + (i + 1));
+    a.setAttribute('aria-label', 'Open ' + (p.alt || 'photo ' + (i + 1)));
     if (p.thumb || p.src) {
       var img = document.createElement('img');
       img.src = url(p.thumb || p.src); img.alt = p.alt || '';
       img.loading = 'lazy'; img.decoding = 'async';
+      loaded(img);
       a.appendChild(img);
     } else placeholder(a, p.tone);
     if (onOpen) a.addEventListener('click', function (e) { e.preventDefault(); onOpen(i); });
@@ -342,18 +350,13 @@
       } else placeholder(d, p.tone);
       strip.appendChild(d);
     });
-    var fr = $('#fr'), tc = $('#tc');
-    AK.heroScroll(hero, window, function (p) {
-      var f = Math.round(p * 240);
-      fr.textContent = 'FR ' + AK.pad(f, 4);
-      tc.textContent = '00:' + AK.pad(Math.floor(f / 24)) + ':' + AK.pad(f % 24);
-    });
+    AK.heroScroll(hero, window);
   }
 
   /* ---------- PHOTOS ---------- */
   if (page === 'photos') {
     var list = MEDIA.photos || [];
-    $('#count').textContent = '02.1 — ' + AK.pad(list.length) + ' frames';
+    $('#count').textContent = list.length + ' frames';
     var grid = $('#grid'), lbEl = $('.ak-lightbox');
     var items = list.map(function (p) { return { src: url(p.src), ratio: p.ratio, tone: p.tone, alt: p.alt }; });
     var lb = AK.lightbox(lbEl, items);
@@ -364,7 +367,7 @@
   /* ---------- VIDEOS ---------- */
   if (page === 'videos') {
     var vids = MEDIA.videos || [];
-    $('#count').textContent = '02.2 — ' + AK.pad(vids.length) + ' clips';
+    $('#count').textContent = vids.length + ' clips';
     var player = $('.ak-player'), pFrame = $('.ak-player__frame'), pLabel = $('#p-label'), pTime = $('#p-time');
     var lastFocus = null;
     function openPlayer(v, n) {
@@ -383,7 +386,7 @@
         el.setAttribute('role', 'img'); el.setAttribute('aria-label', 'Placeholder video');
       }
       pFrame.appendChild(el);
-      pLabel.textContent = 'V' + AK.pad(n) + (v.group === 'intro' ? ' — Intro' : ' — Clip');
+      pLabel.textContent = v.group === 'intro' ? 'Intro' : 'Clip';
       pTime.textContent = v.duration || '';
       player.hidden = false;
       document.documentElement.style.overflow = 'hidden';
@@ -410,6 +413,7 @@
       if (v.poster) {
         var im = document.createElement('img');
         im.src = url(v.poster); im.alt = ''; im.loading = 'lazy'; im.decoding = 'async';
+        loaded(im);
         a.appendChild(im);
       } else placeholder(a, v.tone);
       if (v.preview) {
@@ -427,9 +431,9 @@
       }
       var meta = document.createElement('div');
       meta.className = 'ak-vtile__meta';
-      meta.innerHTML = '<span class="ak-counter ak-vtile__rec"></span><span class="ak-counter"></span>';
-      meta.children[0].textContent = 'V' + AK.pad(i + 1);
-      meta.children[1].textContent = v.duration || '';
+      meta.innerHTML = '<span class="ak-counter"></span>';
+      meta.children[0].textContent = v.duration || '';
+      meta.style.justifyContent = 'flex-end';
       a.appendChild(meta);
       a.addEventListener('click', function (e) { e.preventDefault(); openPlayer(v, i + 1); });
       (v.group === 'intro' ? intros : clips).appendChild(a);

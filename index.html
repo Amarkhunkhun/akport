@@ -11,8 +11,8 @@
 <meta property="og:type" content="website">
 <!-- add your own social preview image: <meta property="og:image" content="https://YOUR-DOMAIN/media/og.jpg"> -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f2a1d'/%3E%3Crect x='6' y='0' width='4' height='20' fill='%231e4d35'/%3E%3Crect x='14' y='12' width='4' height='20' fill='%231e4d35'/%3E%3Crect x='22' y='0' width='4' height='14' fill='%231e4d35'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="fonts/space-grotesk-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ibm-plex-mono-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="styles.css">
 <script>try{if(sessionStorage.getItem('ak-cut'))document.documentElement.classList.add('ak-incoming')}catch(e){}</script>
@@ -36,7 +36,6 @@
   </div>
   <div class="ak-rail__foot">
     <div class="ak-rail__social"><a class="ak-link" href="#" data-link="instagram">Instagram</a><a class="ak-link" href="#" data-link="tiktok">TikTok</a></div>
-    <span class="ak-label">SJSU — 2026</span>
   </div>
 </aside>
 
@@ -57,7 +56,7 @@
 <main class="ak-page ak-page--home" id="main">
   <section class="ak-hero" aria-label="Intro">
     <div class="ak-hero__stage">
-      <!-- The background video comes from media.js → hero. This div is the placeholder. -->
+      <!-- The background video comes from media.js (hero). This div shows until it loads. -->
       <div class="ak-hero__video ak-ph ak-ph--moving" data-tone="neon"></div>
       <div class="ak-hero__dim"></div>
       <h1 class="ak-hero__name"><span class="ak-hero__first">Amar</span><span class="ak-hero__last">Khunkhun</span></h1>
@@ -66,8 +65,6 @@
         <div class="ak-hero__strip"></div>
       </div>
       <div class="ak-letterbox" data-open="true"></div>
-      <div class="ak-hero__hud ak-hero__hud--top"><span class="ak-counter ak-counter--ink" id="fr">FR 0000</span><span class="ak-label">San José, CA</span></div>
-      <div class="ak-hero__hud ak-hero__hud--bottom"><span class="ak-label ak-hero__hint">Scroll ↓</span><span class="ak-counter ak-counter--ink" id="tc">00:00:00</span></div>
     </div>
   </section>
 </main>
